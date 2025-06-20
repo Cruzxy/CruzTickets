@@ -1,0 +1,23 @@
+{
+  "name": "cruztickets",
+  "version": "1.0.0",
+  "description": "Este projeto ainda está em desenvolvimento e não está pronto para uso. Em breve, soltarei a versão final!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cruzxy/CruzTickets.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cruzxy/CruzTickets/issues"
+  },
+  "homepage": "https://github.com/Cruzxy/CruzTickets#readme",
+  "dependencies": {
+    "discord.js": "^14.20.0"
+  }
+}
