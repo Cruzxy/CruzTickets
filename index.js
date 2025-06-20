@@ -68,5 +68,6 @@ client.once(Events.ClientReady, readyClient => {
     console.log(`[CruzTickets] Online como ${readyClient.user.tag}`);
 });
 
+// teste
 
 client.login(config.token);
