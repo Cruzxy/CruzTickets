@@ -4,11 +4,9 @@ Este projeto ainda está em desenvolvimento e não está pronto para uso. Em bre
 
 - **Data de criação**: Criado em 20 de junho de 2025  
 
-CruzTickets é um bot open-source feito em javascript.
-
 ## Comandos
 
-(em breve):
+(em breve)
 
 ---
 
