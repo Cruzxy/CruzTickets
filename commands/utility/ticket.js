@@ -1,17 +1,32 @@
 const { SlashCommandBuilder, PermissionsBitField, ContainerBuilder, MessageFlags, ActionRowBuilder, TextDisplayBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 
+const config = require("../../config.json");
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ticket')
         .setDescription('Envia a messagem de ticket no canal atual.'),
     async execute(interaction) {
 
+        console.log(config)
+
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             return interaction.reply({ content: 'Você Não tem permissão de utilizar o comando.', flags: MessageFlags.Ephemeral });
         }
 
-        const container = new ContainerBuilder()
+        const options = Object.keys(config.categorias).map(key => {
+            const category = config.categorias[key];
+            return {
+                label: `Ticket ${category.nome.charAt(0).toUpperCase() + category.nome.slice(1)}`,
+                emoji: category.emoji,
+                value: category.value,
+                description: `Tickets relacionados a ${category.nome}.`,
+            };
+        });
 
+
+        const container = new ContainerBuilder()
+        .setAccentColor(0x0099FF)
         .addTextDisplayComponents(
             new TextDisplayBuilder()
             .setContent(
@@ -28,11 +43,7 @@ module.exports = {
                 new StringSelectMenuBuilder()
                 .setCustomId('categorias')
                 .setPlaceholder('➡ Selecione sua categoria aqui')
-                .addOptions(
-                    new StringSelectMenuOptionBuilder().setLabel('Categoria 1').setValue('categoria1'),
-                    new StringSelectMenuOptionBuilder().setLabel('Categoria 2').setValue('categoria2'),
-                    new StringSelectMenuOptionBuilder().setLabel('Categoria 3').setValue('categoria3')
-                )
+                .addOptions(options)
             )
         );
 
