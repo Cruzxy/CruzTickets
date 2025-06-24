@@ -139,6 +139,21 @@ module.exports = {
         } else if (interaction.isStringSelectMenu()) { 
           
         if (interaction.customId === 'categorias') {
+    
+        const channels = interaction.guild.channels.cache.find(c => c.topic === `${interaction.user.id}`);
+
+        if (channels) return interaction.reply({
+                components: [
+                    new ContainerBuilder()
+                    .addTextDisplayComponents(
+                        new TextDisplayBuilder()
+                        .setContent(`<@${interaction.user.id}>, você já tem um ticket aberto.`)
+                    )
+                ],
+                flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral
+                }).then(msg => {
+                setTimeout(() => msg.delete(), 10000);
+            });
 
             interaction.message.edit()
 
@@ -166,10 +181,9 @@ module.exports = {
             await interaction.reply({
                 components: [
                     new ContainerBuilder()
-                    .setAccentColor(0x2b2d31)
                     .addTextDisplayComponents(
                         new TextDisplayBuilder()
-                        .setContent(`**${interaction.user.username}**, seu ticket foi criado no canal <#${canal.id}>. Acesse para iniciar o processo.`)
+                        .setContent(`**<@${interaction.user.id}>**, seu ticket foi criado no canal <#${canal.id}>. Acesse para iniciar o processo.`)
                     )
                     .addActionRowComponents(
                         new ActionRowBuilder().addComponents(
