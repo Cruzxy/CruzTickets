@@ -43,6 +43,17 @@ module.exports = {
 
         } else if (interaction.isButton()) {
 
+            if (interaction.customId === 'close') {
+              await interaction.reply({ content: 'Canal vai ser apagado em 10 segundos!', flags: MessageFlags.Ephemeral });
+                setTimeout(async () => {
+                  try {
+                      await interaction.channel.delete();
+                  } catch (e) {
+                      console.error('Erro:', e);
+                  }
+              }, 10000);
+          }
+
             if (interaction.customId === 'paineladmin') {
 
               const guildIcon = interaction.guild.iconURL();
