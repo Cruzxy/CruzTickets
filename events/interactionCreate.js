@@ -1,5 +1,7 @@
 const { Events, MessageFlags, ChannelType, SectionBuilder, SeparatorSpacingSize, SeparatorBuilder, ThumbnailBuilder ,ButtonBuilder, ActionRowBuilder, PermissionsBitField, ContainerBuilder, TextDisplayBuilder, ButtonStyle } = require('discord.js');
 
+Transcript = require('discord-html-transcripts');
+
 const config = require("../config.json")
 
 module.exports = {
@@ -43,7 +45,33 @@ module.exports = {
 
         } else if (interaction.isButton()) {
 
-            if (interaction.customId === 'close') {
+          if (interaction.customId === 'close') {
+            const container = new ContainerBuilder()
+            
+              .addSectionComponents(
+                new SectionBuilder()
+                  .addTextDisplayComponents(
+                    new TextDisplayBuilder()
+                      .setContent('Deseja realmente apagar o ticket?')
+                  )
+                  .setButtonAccessory(
+                    new ButtonBuilder()
+                      .setCustomId('realclose')
+                      .setLabel('Fechar Ticket')
+                      .setStyle(ButtonStyle.Danger)
+                  )
+              );
+
+              await interaction.reply({
+                components: [container],
+                flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
+              });
+            }
+
+
+            if (interaction.customId === 'realclose') {
+              const channel = interaction.guild.channels.cache.get(config.logChannel);
+              channel.send({ files: [await Transcript.createTranscript(interaction.channel)] });
               await interaction.reply({ content: 'Canal vai ser apagado em 10 segundos!', flags: MessageFlags.Ephemeral });
                 setTimeout(async () => {
                   try {
@@ -52,7 +80,7 @@ module.exports = {
                       console.error('Erro:', e);
                   }
               }, 10000);
-          }
+            }
 
             if (interaction.customId === 'paineladmin') {
 
