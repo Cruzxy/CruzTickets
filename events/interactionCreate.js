@@ -45,6 +45,24 @@ module.exports = {
 
         } else if (interaction.isButton()) {
 
+          if (interaction.customId === "notify_author") {
+
+            const usuario = await interaction.guild.members.fetch(interaction.channel.topic).catch(() => null);
+
+            const container = new ContainerBuilder()
+              .addTextDisplayComponents(
+                new TextDisplayBuilder()
+                  .setContent(`Ei <@${interaction.user.id}> \nEstamos aguardando sua resposta no ticket: <#${interaction.channel.id}>`)
+                );
+              
+            if (usuario) {
+              await usuario.send({ components: [container], flags: MessageFlags.IsComponentsV2 });
+              await interaction.reply({ content: `<@${interaction.user.id}> foi notificado no privado`, flags: MessageFlags.Ephemeral });
+            } else {
+              await interaction.reply({ content: "Não foi possível encontrar o autor do ticket.", flags: MessageFlags.Ephemeral });
+            }
+          }
+
           if (interaction.customId === 'close') {
             const container = new ContainerBuilder()
             
