@@ -1,3 +1,11 @@
+# Configurações do bot
+config.json
+
+# Node.js
 node_modules/
 package-lock.json
-config.json
+yarn.lock
+npm-debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
