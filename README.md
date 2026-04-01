@@ -1,5 +1,9 @@
 # 🎫 CruzTickets
 
+<div align="center">
+  <img src="imgs/logo.jpeg" alt="CruzTickets Logo" width="300" style="border-radius: 10px; margin: 20px 0;">
+</div>
+
 Um bot Discord moderno e eficiente para gerenciar sistemas de tickets em servidores. Perfeito para suporte, recrutamento, atendimento ao cliente e muito mais!
 
 > ⚠️ **Status**: Este projeto está em desenvolvimento ativo. Novos recursos e melhorias estão sendo adicionados regularmente.
