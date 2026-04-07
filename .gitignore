@@ -1,6 +1,9 @@
 # Configurações do bot
 config.json
 
+# Dados de servidores
+guilds/*.json
+
 # Node.js
 node_modules/
 package-lock.json

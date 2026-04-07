@@ -14,28 +14,48 @@ Um bot Discord moderno e eficiente para gerenciar sistemas de tickets em servido
 
 CruzTickets é um bot Discord baseado em [Discord.js 14](https://discord.js.org/) que permite criar e gerenciar um sistema robusto de suporte através de tickets. Os usuários podem abrir tickets para diferentes categorias e receber suporte dedicado de forma organizada.
 
-**Desenvolvido**: 20 de junho de 2025
+O bot utiliza **Components V2** (Containers) do Discord para criar painéis visuais modernos e interativos.
 
 ---
 
 ## ✨ Recursos
 
-- 🎫 Sistema completo de criação e gestão de tickets
-- 💬 Comandos slash (/) modernos
-- 📝 Transcrições em HTML dos tickets
-- 🎯 Suporte a múltiplas categorias
-- ⚙️ Fácil configuração
+### 🎫 Sistema de Tickets
+- Criação automática de canais privados por categoria
+- Painel público com select menu para usuários abrirem tickets
+- Verificação de ticket duplicado (1 ticket por usuário)
+- Fechamento com confirmação e contagem regressiva de 10 segundos
+
+### 🛠️ Painel Staff (Admin)
+- Botão exclusivo para administradores dentro de cada ticket
+- **Notificar Autor** — Envia DM ao criador do ticket avisando que a equipe aguarda resposta
+- **Adicionar Usuário** — Select menu visual para adicionar membros ao ticket
+- **Remover Usuário** — Select menu visual para remover membros do ticket
+
+### ⚙️ Configurações por Servidor
+- **Categorias** — Adicionar, editar e remover categorias com nome, emoji e descrição
+- **Canal de Logs** — Configura onde os transcripts dos tickets fechados serão salvos
+- **Canal de Notificações** — Recebe alerta automático quando um novo ticket é aberto
+- **Cargos de Notificação** — Cargos mencionados (@) nas notificações de novos tickets
+
+### 📋 Transcripts
+- Geração automática de transcript HTML ao fechar um ticket
+- Enviado para o canal de logs configurado
+- Histórico completo da conversa para auditoria
+
+### 📊 Painel Administrativo
+- Comando `/ticket` exibe painel ephemeral (visível só para o admin)
+- Status completo das configurações do servidor
+- Ajuda integrada com guia de uso
 
 ---
 
 ## 🛠️ Requisitos
 
-Antes de começar, certifique-se de ter:
-
-- **Node.js** v18+ instalado ([Download aqui](https://nodejs.org/))
-- **npm** (geralmente incluído com Node.js)
+- **Node.js** v18+ ([Download aqui](https://nodejs.org/))
+- **npm** (incluído com Node.js)
 - Um **bot Discord** criado no [Discord Developer Portal](https://discord.com/developers/applications)
-- Permissões adequadas no servidor para adicionar o bot
+- Permissões de administrador no servidor
 
 ---
 
@@ -67,8 +87,8 @@ Crie um arquivo `config.json` na raiz do projeto:
 ```
 
 **Como obter essas informações:**
-- `token`: Acesse [Discord Developer Portal](https://discord.com/developers/applications) → Sua aplicação → Bot → Token (clique em "Copy")
-- `clientId`: Na mesma página, encontre "APPLICATION ID" ou "Client ID"
+- `token`: [Discord Developer Portal](https://discord.com/developers/applications) → Sua aplicação → Bot → Token
+- `clientId`: Na mesma página, copie o "Application ID"
 - `guildId`: No Discord, ative "Modo Desenvolvedor" (Configurações → Avançado) e clique direito no servidor para copiar o ID
 
 ### 4. Iniciar o bot
@@ -77,23 +97,34 @@ Crie um arquivo `config.json` na raiz do projeto:
 node .
 ```
 
-ou
-
-```bash
-node index.js
-```
-
-Você verá no console uma mensagem confirmando que os comandos foram carregados com sucesso.
-
 ---
 
 ## 🚀 Como Usar
 
-Assim que o bot estiver funcionando, você pode:
+### Configuração Inicial
 
-1. **Convidar o bot para seu servidor**: Use a URL de convite do [Discord Developer Portal](https://discord.com/developers/applications)
-2. **Usar os comandos**: Digite `/` no chat para ver todos os comandos disponíveis
-3. **Gerenciar tickets**: Use os comandos para criar, fechar e gerenciar tickets
+1. Use `/ticket` para abrir o painel administrativo
+2. Vá em **Gerenciar Categorias** e crie pelo menos uma categoria (nome, emoji e descrição)
+3. Configure o **Canal de Logs** para salvar transcripts
+4. Configure o **Canal de Notificações** para alertas de novos tickets
+5. Adicione **Cargos de Notificação** para mencionar sua equipe
+6. Clique em **Enviar Painel** no canal desejado para publicar o painel público
+
+### Fluxo do Ticket
+
+1. O usuário seleciona uma categoria no painel público
+2. Um canal privado é criado automaticamente
+3. O usuário descreve seu problema
+4. Admins usam o **Painel Staff** para gerenciar o ticket
+5. Ao fechar, o transcript é salvo e o canal é deletado após 10 segundos
+
+---
+
+## 📝 Comandos
+
+| Comando | Descrição | Permissão |
+|---------|-----------|-----------|
+| `/ticket` | Abre o painel administrativo de tickets | Administrador |
 
 ---
 
@@ -101,43 +132,42 @@ Assim que o bot estiver funcionando, você pode:
 
 ```
 CruzTickets/
-├── index.js                 # Arquivo principal do bot
-├── config.json             # Configurações (criado por você)
-├── package.json            # Dependências do projeto
+├── index.js                  # Arquivo principal do bot
+├── config.json               # Configurações (token, IDs)
+├── package.json              # Dependências do projeto
 ├── commands/
 │   └── utility/
-│       └── ticket.js       # Comando de tickets
-└── events/
-    ├── interactionCreate.js  # Gerencia interações
-    └── ready.js              # Evento quando bot inicia
+│       └── ticket.js         # Comando /ticket (painel admin)
+├── events/
+│   ├── interactionCreate.js  # Gerencia todas as interações
+│   └── ready.js              # Evento de inicialização
+├── guilds/                   # Configurações salvas por servidor
+└── utils/
+    └── configManager.js      # Gerenciador de configs por guild
 ```
 
 ---
 
 ## 🔧 Dependências
 
-- **discord.js** - Framework para criar bots Discord
-- **discord-html-transcripts** - Gera transcrições em HTML dos tickets
-
----
-
-## 📝 Comandos
-
-Os comandos estão organizados em pastas dentro de `commands/`. Novos comandos podem ser adicionados criando um arquivo `.js` com a estrutura correta.
+| Pacote | Descrição |
+|--------|-----------|
+| [discord.js](https://discord.js.org/) | Framework para bots Discord (v14) |
+| [discord-html-transcripts](https://github.com/ItzDerock/discord-html-transcripts) | Geração de transcripts HTML |
 
 ---
 
 ## 🤝 Contribuindo
 
-Se você tem sugestões ou encontrou bugs, sinta-se à vontade para:
-- Abrir uma [issue](https://github.com/Cruzxy/CruzTickets/issues)
-- Fazer um [pull request](https://github.com/Cruzxy/CruzTickets/pulls)
+Se você tem sugestões ou encontrou bugs:
+- Abra uma [issue](https://github.com/Cruzxy/CruzTickets/issues)
+- Faça um [pull request](https://github.com/Cruzxy/CruzTickets/pulls)
 
 ---
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes completos.
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
 
 ---
 
