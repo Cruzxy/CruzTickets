@@ -81,8 +81,7 @@ Crie um arquivo `config.json` na raiz do projeto:
 ```json
 {
   "token": "SEU_TOKEN_DO_BOT_AQUI",
-  "clientId": "SEU_CLIENT_ID_AQUI",
-  "guildId": "ID_DO_SEU_SERVIDOR"
+  "clientId": "SEU_CLIENT_ID_AQUI"
 }
 ```
 
